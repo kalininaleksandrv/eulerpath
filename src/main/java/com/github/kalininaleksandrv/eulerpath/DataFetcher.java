@@ -1,8 +1,5 @@
 package main.java.com.github.kalininaleksandrv.eulerpath;
 
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
-import org.w3c.dom.ls.LSOutput;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,10 +14,8 @@ public class DataFetcher {
     public DataFetcher() {
     }
 
-    public String dataMainRouter(String filePath) {
-        String result = fetchDataFromFile(filePath);
-        prepareListOfKnuckle(result);
-        return result;
+    public ArrayList<Edge> dataMainRouter(String filePath) {
+        return prepareListOfEdges(fetchDataFromFile(filePath));
     }
 
     public String fetchDataFromFile(String filePath) {
@@ -35,7 +30,7 @@ public class DataFetcher {
         return contentBuilder.toString();
     }
 
-    private void prepareListOfKnuckle(String result) {
+    private ArrayList<Edge> prepareListOfEdges(String result) {
 
         ArrayList<Edge> listofedges = new ArrayList<>();
 
@@ -43,9 +38,12 @@ public class DataFetcher {
                 .forEach(i -> {
                     String [] res = i.split(":");
                     Edge myedge = new Edge(Integer.parseInt(res [0]), Integer.parseInt(res [1]));
+                    myedge.checkForSymetrical();
                     listofedges.add(myedge);
                 });
 
-        listofedges.forEach(i -> System.out.println(i.toString()));
+        return listofedges;
     }
+
+
 }

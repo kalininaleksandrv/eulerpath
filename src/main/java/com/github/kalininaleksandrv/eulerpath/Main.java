@@ -15,7 +15,11 @@ public class Main {
 
     private static void getEulerPath(String path) {
         DataFetcher dataFetcher = new DataFetcher();
-        String data = dataFetcher.dataMainRouter(path);
-        System.out.println(data);
+        ArrayList<Edge> data = dataFetcher.dataMainRouter(path);
+
+        DataProcessor dataProcessor = new DataProcessor(data);
+        String result = dataProcessor.processData();
+
+ //       System.out.println(result);
     }
 }

@@ -19,6 +19,9 @@ public class Edge {
     Integer[] edgearray = new Integer[2];
     Integer[] edgearrayrev = new Integer[2];
 
+    boolean isSymmetrical;
+    boolean isVisited = false;
+
     private Integer[] getEdge(){
         return edgearray;
     }
@@ -52,5 +55,25 @@ public class Edge {
         result = 31 * result + Arrays.hashCode(edgearray);
         result = 31 * result + Arrays.hashCode(edgearrayrev);
         return result;
+    }
+
+    public void checkForSymetrical() {
+        isSymmetrical = vertexa.equals(vertexb);
+    }
+
+    public boolean isSymmetrical() {
+        return isSymmetrical;
+    }
+
+    public Integer getVertexa() {
+        return vertexa;
+    }
+
+    public Integer getVertexb() {
+        return vertexb;
+    }
+
+    public boolean isVisited() {
+        return isVisited;
     }
 }
