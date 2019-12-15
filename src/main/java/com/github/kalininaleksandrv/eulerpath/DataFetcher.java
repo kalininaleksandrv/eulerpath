@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class DataFetcher {
@@ -13,7 +11,11 @@ public class DataFetcher {
     public DataFetcher() {
     }
 
-    public ArrayList<String> fetchDataFromFile(String filePath){
+    public String dataMainRouter(String filePath){
+        return fetchDataFromFile(filePath);
+    }
+
+    public String fetchDataFromFile(String filePath){
 
         StringBuilder contentBuilder = new StringBuilder();
         try (Stream<String> stream = Files.lines( Paths.get(filePath), StandardCharsets.UTF_8))
@@ -24,9 +26,7 @@ public class DataFetcher {
         {
             e.printStackTrace();
         }
-        String result = contentBuilder.toString();
-        System.out.println(result);
 
-        return new ArrayList<>(Arrays.asList(filePath, "one", "two", "three"));
+        return contentBuilder.toString();
     }
 }

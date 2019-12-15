@@ -15,10 +15,7 @@ public class Main {
 
     private static void getEulerPath(String path) {
         DataFetcher dataFetcher = new DataFetcher();
-        ArrayList<String> data = dataFetcher.fetchDataFromFile(path);
-
-        data.forEach(item->{
-                System.out.println(item);
-        });
+        String data = dataFetcher.dataMainRouter(path);
+        System.out.println(data);
     }
 }
