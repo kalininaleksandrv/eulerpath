@@ -14,7 +14,7 @@ public class DataFetcher {
     public DataFetcher() {
     }
 
-    public ArrayList<Edge> dataMainRouter(String filePath) {
+    public ArrayList<Integer>[]  dataMainRouter(String filePath) {
         return prepareListOfEdges(fetchDataFromFile(filePath));
     }
 
@@ -30,19 +30,24 @@ public class DataFetcher {
         return contentBuilder.toString();
     }
 
-    private ArrayList<Edge> prepareListOfEdges(String result) {
+    private ArrayList<Integer>[] prepareListOfEdges(String result) {
 
-        ArrayList<Edge> listofedges = new ArrayList<>();
+        ArrayList<String> listofedges = new ArrayList<>();
 
         new ArrayList<>(Arrays.asList(result.split(",")))
-                .forEach(i -> {
-                    String [] res = i.split(":");
-                    Edge myedge = new Edge(Integer.parseInt(res [0]), Integer.parseInt(res [1]));
-                    myedge.checkForSymetrical();
-                    listofedges.add(myedge);
+                .forEach(i -> listofedges.add(i));
+
+        ArrayList<Integer>[] arrayofedges = new ArrayList[7];
+        for (int i=0; i<arrayofedges.length; i++){
+            arrayofedges[i] = new ArrayList<>();
+        }
+
+        listofedges.stream().map(i -> i.split(":")).forEach(res -> {
+                    arrayofedges[Integer.parseInt(res[0])].add(Integer.parseInt(res[1]));
+                    arrayofedges[Integer.parseInt(res[1])].add(Integer.parseInt(res[0]));
                 });
 
-        return listofedges;
+        return arrayofedges;
     }
 
 
