@@ -1,7 +1,6 @@
 package main.java.com.github.kalininaleksandrv.eulerpath;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Main {
 

@@ -1,20 +1,24 @@
 package main.java.com.github.kalininaleksandrv.eulerpath;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DataProcessor {
-    private ArrayList<Integer>[]  data;
-    private boolean[] isvisited;
-    private int[] isnoNull;
-    private AtomicInteger verticles;
-    private Integer nonullvertcounter = 0;
-    private String path = "path is: ";
+import static java.lang.Integer.max;
 
+public class DataProcessor {
+    private final ArrayList<Integer>[] data;
+    private final AtomicInteger verticles;
+    private Integer nonullvertcounter = 0;
+    private final List<Integer[]> edgelist;
 
     public DataProcessor(ArrayList<Integer>[]  data) {
         this.data = data;
         this.verticles = new AtomicInteger();
+
+        edgelist = new LinkedList<>();
     }
 
     public Integer prePprocessData(){
@@ -30,7 +34,7 @@ public class DataProcessor {
                 });
                 System.out.print("\n");
             } else {
-                System.out.println("для вершины " + i + "грани не найдены:");
+                System.out.println("для вершины " + i + " грани не найдены:");
             }
         }
 
@@ -46,8 +50,8 @@ public class DataProcessor {
     boolean checkIfConnected (Integer vert){
         //создаем массив для регистрации посещеных вершин
 
-        isvisited = new boolean[vert+1];
-        isnoNull = new int[nonullvertcounter+1];
+        boolean[] isvisited = new boolean[max(data.length, vert)];
+        int[] isnoNull = new int[nonullvertcounter];
         boolean isConnected = true;
 
         for (int i = 0; i < vert; i++) {
@@ -64,9 +68,10 @@ public class DataProcessor {
             }
         }
 
-        //рекурсивно проверяем все вершины на связь друг с другом, связанные помечаем как true
+        System.out.println("ненулевые вершины: " + Arrays.toString(isnoNull));
+
             recurCounterOfVertex(isnoNull[0], isvisited);
-        //
+
         for (int i=0; i<data.length; i++){
             if (!isvisited[i] && data[i].size()>0){
                 System.out.println("найдена изолированная вершина " + i);
@@ -76,15 +81,32 @@ public class DataProcessor {
         return isConnected;
     }
 
+    //рекурсивно проверяем все вершины на связь друг с другом, связанные помечаем как true
     private void recurCounterOfVertex(int nnvert, boolean[] isvisited) {
+
+
         isvisited[nnvert] = true;
-        path = path.concat(String.valueOf(nnvert));
-        System.out.println("вершина " + nnvert + " помечена как посещенная");
-        // Recur for all the vertices adjacent to this vertex
+
         for (int n : data[nnvert]) {
-            if (!isvisited[n])
+            System.out.println("ПОЛНЫЙ ОБХОД идем из " + nnvert + " в " +n);
+
+            collectPairs(nnvert, n);
+
+            //передавать значение нужно когда меняется nnvert
+            if (!isvisited[n]) {
+                System.out.println("---------");
                 recurCounterOfVertex(n, isvisited);
+            }
+
         }
+
+    }
+
+    private void collectPairs(int sourcevert, int targetvert) {
+        Integer [] pair = new Integer[2];
+        pair[0] = sourcevert;
+        pair[1] = targetvert;
+        edgelist.add(pair);
     }
 
     public boolean countVertDegree() {
@@ -100,6 +122,21 @@ public class DataProcessor {
     }
 
     public void printPath(){
-        System.out.println(path);
+
+        int count;
+        int prev;
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < edgelist.size()-1; i++) {
+            prev = edgelist.get(i)[0];
+            count = edgelist.get(i+1)[0];
+            if(prev != count) {
+                sb.append(Arrays.toString(edgelist.get(i))).append(" ");
+            }
+
+        }
+
+        System.out.println(sb);
     }
 }

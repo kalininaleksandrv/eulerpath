@@ -34,8 +34,9 @@ public class DataFetcher {
 
         ArrayList<String> listofedges = new ArrayList<>();
 
-        new ArrayList<>(Arrays.asList(result.split(",")))
-                .forEach(i -> listofedges.add(i));
+        for (String s : new ArrayList<>(Arrays.asList(result.split(",")))) {
+            listofedges.add(s);
+        }
 
         ArrayList<Integer>[] arrayofedges = new ArrayList[7];
         for (int i=0; i<arrayofedges.length; i++){
